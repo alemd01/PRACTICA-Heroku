@@ -2,16 +2,19 @@ from flask import Flask, render_template,request
 app = Flask(__name__)	
 
 
-@app.route('/',methods=["GET"])
+@app.route('/')
 def inicio():
-	return render_template("formulario.html")
+	return render_template("base.html")
 
-@app.route("/procesar", methods=["post"])
-def procesar_formulario():
-	passwd = request.form.get("pass_control")
-	if passwd == "asdasd":
-		return render_template("datos.html", datos=request.form)
-	else:
-		return render_template("error.html", error="Contraseña incorrecta")
+@app.route("/potencia")
+def potencia():
+	return render_template("potencia.html")
 
-app.run(debug=True)
+@app.route("/cuenta")
+def cuentas():
+	return render_template("cuenta.html")
+
+@app.route("/libro")
+def libros():
+	return render_template("libro.html")
+app.run("0.0.0.0",5555,debug=True)
