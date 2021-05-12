@@ -20,9 +20,13 @@ def potencia(op1,op2):
 	
 	return render_template("potencia.html",num1=op1,num2=op2,resultado=res)
 
-@app.route("/cuenta")
-def cuentas():
-	return render_template("cuenta.html")
+@app.route("/cuenta/<num1>/<num2>",methods=["GET","POST"])
+def cuentas(num1,num2):
+	acum=0
+	for a in range(0,len(num1)):
+	   if num2 == num1[a]:
+	      acum=acum+1
+	return render_template("cuenta.html",op1=num1,op2=num2,resul=acum)
 
 @app.route("/libro")
 def libros():
