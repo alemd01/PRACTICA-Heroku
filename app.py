@@ -1,5 +1,7 @@
-from flask import Flask, render_template,request
-app = Flask(__name__)	
+from flask import Flask, render_template,request,abort
+from lxml import etree
+libros = etree.parse('libros.xml')
+app = Flask(__name__)
 
 
 @app.route('/')
@@ -10,14 +12,14 @@ def inicio():
 def potencia(op1,op2):
 	if op2 > 0:
 	   res = pow(op1,op2)
-	
+
 	elif op2 == 0:
 	   res = 1
-	
+
 	elif op2 < 0:
 	   pos = abs(op2)
 	   res = 1/pow(op1,pos)
-	
+
 	return render_template("potencia.html",num1=op1,num2=op2,resultado=res)
 
 @app.route("/cuenta/<num1>/<num2>",methods=["GET","POST"])
@@ -28,7 +30,14 @@ def cuentas(num1,num2):
 	      acum=acum+1
 	return render_template("cuenta.html",op1=num1,op2=num2,resul=acum)
 
-@app.route("/libro")
-def libros():
-	return render_template("libro.html")
+@app.route("/libro/<num1>",methods=["GET","POST"])
+def busca_libros(num1):
+	codigo = libros.xpath('//codigo/text()')
+	for n in range(0,len(codigo)):
+	   if num1 == codigo[n]:
+	      tit = libros.xpath('//codigo[. ="%s"]/../titulo/text()' % num1)
+	      aut = libros.xpath('//codigo[. ="%s"]/../autor/text()' % num1)
+	      return render_template("libro.html",titulo=tit[0],autor=aut[0])
+	      break
+	return abort(404)
 app.run("0.0.0.0",5555,debug=True)
