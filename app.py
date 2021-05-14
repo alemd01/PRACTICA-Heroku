@@ -1,5 +1,6 @@
 from flask import Flask, render_template,request,abort
 from lxml import etree
+import os
 libros = etree.parse('libros.xml')
 app = Flask(__name__)
 
