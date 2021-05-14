@@ -40,4 +40,5 @@ def busca_libros(num1):
 	      return render_template("libro.html",titulo=tit[0],autor=aut[0])
 	      break
 	return abort(404)
-app.run("0.0.0.0",5555,debug=True)
+port=os.environ["PORT"]
+app.run("0.0.0.0",int(port),debug=True)
